@@ -1,0 +1,3 @@
+type Mutation {
+    createAccount(username, email, firstName, lastName, bio): User!
+}

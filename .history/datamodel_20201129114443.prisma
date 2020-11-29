@@ -1,0 +1,21 @@
+type User {
+  id: ID! @id
+  name: String!
+  lastName: String!
+}
+
+type Post {
+
+}
+
+type Like {
+
+}
+
+type Comment {
+
+}
+
+type File {
+
+}

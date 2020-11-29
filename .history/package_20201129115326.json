@@ -1,0 +1,26 @@
+{
+  "name": "prismagram2",
+  "version": "1.0.0",
+  "description": "instargram clone with Express + Prisma + React and React Navtive",
+  "repository": "https://github.com/WISUNGWON/prismagram2.git",
+  "author": "WISUNGWON <tkrhkaos12@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.7",
+    "babel-node": "^0.0.1-security",
+    "dotenv": "^8.2.0",
+    "graphql-tools": "^7.0.2",
+    "graphql-yoga": "^1.18.3",
+    "merge-graphql-schemas": "^1.7.8",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "deploy": "prisma1 deploy",
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "devDependencies": {}
+}

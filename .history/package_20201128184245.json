@@ -1,0 +1,11 @@
+{
+  "name": "prismagram2",
+  "version": "1.0.0",
+  "description": "instargram clone with Express + Prisma + React and React Navtive",
+  "repository": "https://github.com/WISUNGWON/prismagram2.git",
+  "author": "WISUNGWON <tkrhkaos12@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql-yoga": "^1.18.3"
+  }
+}

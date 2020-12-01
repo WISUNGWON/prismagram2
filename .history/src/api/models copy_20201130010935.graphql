@@ -1,0 +1,115 @@
+type User {
+  id: ID!
+  email: String!
+  encryptedPassword: String!
+  Name: String!
+  studentNumber: String!
+  phoneNumber: String!
+  sex: String!
+  university: String!
+  major: String!
+  isMaster: Club
+  notifications: [Notification]
+  applications: [Application]
+  rooms: [Room]
+  clubs: [Club]
+  auth: Boolean
+}
+
+type Club {
+  id: ID!
+  name: String!
+  bio: String!
+  description: String!
+  type: String!
+  master: User!
+  members: [User]
+  socialUrl: [String]
+  clubImage: String
+  logoImage: String
+  questions: [Question]
+  applications: [Application]
+  application_description: String!
+  posts: [Post]
+}
+
+type Room {
+  id: ID!
+  participants: [User!]!
+  messages: [Message!]!
+}
+
+type Message {
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  room: Room!
+  created: DateTime!
+}
+
+type Question {
+  id: ID!
+  owner: Club!
+  subject: String
+  type: String
+  options: [String]
+}
+
+type Application {
+  id: ID!
+  user: User!
+  club: Club!
+  answer: [String]!
+  status: String
+  created: DateTime!
+}
+
+type Notification {
+  id: ID!
+  user: User!
+  content: String!
+  checked: Boolean!
+  created: DateTime!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  user: User!
+  club: Club!
+  files: [String!]!
+  type: String
+  status: String!
+  created: DateTime!
+  updated: DateTime
+}
+
+type Comment {
+  id: ID!
+  user: User!
+  post: Post!
+  subComments: [SubComment!]
+  content: String!
+  status: String!
+  created: DateTime!
+  updated: DateTime
+}
+
+type SubComment {
+  id: ID!
+  user: User!
+  comment: Comment!
+  content: String!
+  status: String!
+  created: DateTime!
+  updated: DateTime
+}
+
+type Secret {
+  id: ID!
+  email: String!
+  secret: String!
+  auth: Boolean
+}

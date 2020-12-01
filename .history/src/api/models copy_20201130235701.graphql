@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String 
+  encryptedPassword String
+  userName String 
+  studentNumber String 
+  userPhoneNumber String 
+  university String 
+  major String 
+  applications Application[]
+  rooms Room[]
+  auth Boolean
+  masterClub Club? @relation("ClubMaster")
+  clubs Club[] @relation("ClubMember")
+}
+
+model Club {
+  id Int @id @default(autoincrement())
+  clubName String 
+  clubBio String 
+  description String 
+  type String 
+  members User[] @relation("ClubMember")
+  clubImage String
+  logoImage String
+  questions Question[]
+  applications Application[]
+  application_description String 
+  posts Post[]
+  master User @relation("ClubMaster")
+  clubAddInfo ClubAddInfo?
+}
+
+model ClubAddInfo {
+  id Int @id @default(autoincrement())
+  party Boolean @default(value: false)
+  partyDay String 
+  clubPhoneNumber String
+  socialUrl String
+  isUnion Boolean @default(value: false)
+  numberOfMembers Int
+  email String 
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  participants User[]
+  messages Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String
+  room Room
+  createdAt DateTime @default(now())
+  from User @relation("fromUser")
+  to User @relation("toUser")
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+  subject String
+  type String
+  options String
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Application {
+  id Int @id @default(autoincrement())
+  answer String
+  status String
+  createdAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  Club Club @relation(fields:[clubId], references:[id])
+  
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String?
+  files String
+  type String
+  status String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  club Club @relation(fields:[clubId], references:[id])
+}
+

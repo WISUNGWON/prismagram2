@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String 
+  encryptedPassword String
+  Name String
+  studentNumber String 
+  phoneNumber String
+  university String
+  major String
+  isMaster Club
+  applications Application[]
+  rooms Room[]
+  clubs Club[]
+  auth Boolean
+}
+model Club {
+  id Int @id @default(autoincrement())
+  name String
+  bio String
+  description String 
+  type String 
+  members User[]
+  clubImage String
+  logoImage String
+  questions Question[]
+  applications Application[]
+  application_description String 
+  posts Post[]
+  masterId Int 
+  clubAddInfo ClubAddInfo
+  User User @relation(field:[masterId], references:[id])
+}
+
+model ClubAddInfo {
+  id Int @id @default(autoincrement())
+  party Boolean
+  partyDay String
+  phoneNumber String
+  socialUrl String[]
+  union Boolean
+  numberOfMembers Int
+  Email String
+  clubId Int
+  Club Club @relation(field:[clubId], references:[id])
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  participants User[]
+  messages Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String
+  from User
+  to User
+  room Room
+  createdAt DateTime @default(now())
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+  subject String
+  type String
+  options String[]
+  clubId Int
+  Club Club @relation(field:[clubId], references:[id])
+}
+
+model Application {
+  id Int @id @default(autoincrement())
+  answer String[]
+  status String
+  createdAt DateTime @default(now())
+  userId User
+  clubId Club
+  User User @relation(field:[userId], references:[id])
+  Club Club @relation(field:[clubId], references:[id])
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String?
+  files String[]
+  type String
+  status String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId User
+  clubId Club
+  User User @relation(field:[userId], references:[id])
+  club Club @relation(field:[clubId], references:[id])
+}
+

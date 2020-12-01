@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+type User {
+  id: ID!
+  email: String!
+  encryptedPassword: String!
+  Name: String!
+  studentNumber: String!
+  phoneNumber: String!
+  university: String!
+  major: String!
+  isMaster: Club
+  notifications: [Notification]
+  applications: [Application]
+  rooms: [Room]
+  clubs: [Club]
+  auth: Boolean
+}
+model Club {
+  id Int @id @default(autoincrement())
+  name String 
+  bio String 
+  description String
+  type: String! @default('교양')
+  members: [User]
+  clubAddInfo: ClubAddInfo 
+  clubImage: String
+  logoImage: String
+  questions: [Question]
+  applications: [Application]
+  application_description: String!
+  posts: [Post]
+  master: User!
+  master: User! @relation(field:[master], references:[id])
+}
+
+model ClubAddInfo {
+  id: ID! @id
+  Club: Club! @relation(references: id)
+  Party: Boolean
+  PartyDay: String
+  PhoneNumber: String
+  socialUrl: [String]
+  Union: Boolean
+  NumberOfMembers: Int
+  Email: String
+}
+
+type Room {
+  id: ID!
+  participants: [User!]!
+  messages: [Message!]!
+}
+
+type Message {
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  room: Room!
+  created: DateTime!
+}
+
+model Question {
+  id: ID! @id 
+  owner: Club!
+  subject: String
+  type: String
+  options: [String]
+}
+
+model Application {
+  id: ID! @id 
+  user: User!
+  club: Club!
+  answer: [String]!
+  status: String
+  created: DateTime! @default(now())
+}
+
+model Post {
+  id: ID! @id 
+  title: String!
+  content: String!
+  user: User!
+  club: Club!
+  files: [String!]!
+  type: String
+  status: String!
+  created: DateTime! @default(now())
+  updated: DateTime @updated
+}
+

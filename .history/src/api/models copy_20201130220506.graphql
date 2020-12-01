@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String 
+  encryptedPassword String
+  Name String
+  studentNumber String 
+  phoneNumber String
+  university String
+  major String
+  role Role @default(USER)
+  applications Application[]
+  rooms Room[]
+  clubs Club[] @relation(references: [id])
+  auth Boolean
+}
+model Club {
+  id Int @id @default(autoincrement())
+  name String
+  bio String
+  description String 
+  type String 
+  members User[] @relation(references: [id])
+  clubImage String
+  logoImage String
+  questions Question[]
+  applications Application[]
+  application_description String 
+  posts Post[]
+  masterId Int
+  clubAddInfo ClubAddInfo?
+  User User @relation("masterId", fields:[masterId], references:[id])
+}
+
+model ClubAddInfo {
+  id Int @id @default(autoincrement())
+  party Boolean
+  partyDay String
+  phoneNumber String
+  socialUrl String
+  union Boolean
+  numberOfMembers Int
+  Email String
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  participants User[]
+  messages Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String
+  fromId Int 
+  room Room
+  createdAt DateTime @default(now())
+  User User @relation("from", fields:[fromId], references:[id])
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+  subject String
+  type String
+  options String
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Application {
+  id Int @id @default(autoincrement())
+  answer String
+  status String
+  createdAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  Club Club @relation(fields:[clubId], references:[id])
+  
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String?
+  files String
+  type String
+  status String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  club Club @relation(fields:[clubId], references:[id])
+  
+}
+
+enum Role {
+  USER
+  MANAGER
+  MASTER
+}

@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String 
+  encryptedPassword String
+  userName String 
+  studentNumber String 
+  userPhoneNumber String 
+  university String 
+  major String 
+  applications Application[]
+  rooms Room[]
+  auth Boolean
+  fromMessage Message[] @relation("fromMessage")
+  toMessage Message[] @relation("toMessage")
+  masterClub Club? @relation("ClubMaster")
+  clubs Club[] @relation("ClubMember")
+}
+
+model Club {
+  id Int @id @default(autoincrement())
+  clubName String 
+  clubBio String 
+  description String 
+  type String 
+  members User[] @relation("ClubMember")
+  clubImage String
+  logoImage String
+  questions Question[]
+  applications Application[]
+  application_description String 
+  posts Post[]
+  master User @relation("ClubMaster")
+  clubAddInfo ClubAddInfo?
+}
+
+model ClubAddInfo {
+  id Int @id @default(autoincrement())
+  party Boolean @default(value: false)
+  partyDay String 
+  clubPhoneNumber String
+  socialUrl String
+  isUnion Boolean @default(value: false)
+  numberOfMembers Int
+  email String 
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  participants User[]
+  messages Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String
+  room Room
+  createdAt DateTime @default(now())
+  fromId Int
+  toId Int
+  From User  @relation("fromMessage",fields:[fromId], references:[id])
+  To User @relation("toMessage",fields:[toId], references:[id])
+}
+
+model Option {
+  id Int @id @default(autoincrement())
+  content String
+  questionId Int
+  Question Question @relation(fields:[questionId], references:[id])
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+  content String
+  type String
+  options Option[]
+  clubId Int
+  Club Club @relation(fields:[clubId], references:[id])
+}
+
+model Answer {
+  id Int @id @default(autoincrement())
+  content String
+  appId Int
+  Application Application @relation(fields:[appId], references:[id])
+}
+model Application {
+  id Int @id @default(autoincrement())
+  answer Answer[]
+  createdAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  Club Club @relation(fields:[clubId], references:[id])
+  
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  file String
+  type String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId Int
+  clubId Int
+  User User @relation(fields:[userId], references:[id])
+  club Club @relation(fields:[clubId], references:[id])
+}
